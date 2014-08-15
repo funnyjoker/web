@@ -9,7 +9,9 @@
 <body>
     <a href="http://pinganpub.u.qiniudn.com/Hm_admin_1398323658415_47164" id="picture" onclick="savepic();return false;">下载图片</a> <br/>
     <!--<button id="test" onclick="test();">测试Base64</button>  <br/>-->
-
+    <!--测试输入：<input type="text"><br/>-->
+    <!--输入电话： <input type="tel"/>-->
+    <a href="#" id="newlink" >下载图片2</a>
     <p id="tips"></p>
 <script>
 
@@ -75,14 +77,29 @@
 
 
     function downloadFile(fileName, blob){
-        var aLink = document.createElement('a'),
-            evt = document.createEvent("HTMLEvents");
+        var link=URL.createObjectURL(blob);
+        if(document.all){
+            //IE
+            var tag=document.getElementById('newlink');
+            tag.href=link;
+            tag.download=fileName;
+            tag.click();
+        }else{
+            var aLink = document.createElement('a'),
+                moz=navigator.userAgent.indexOf('Mozilla');
 
-        evt.initEvent("click");
+            if(moz>-1){
+                var evt=document.createEvent("MouseEvents");
+            }else{
+                var evt = document.createEvent("HTMLEvents");
+            }
+            evt.initEvent("click",true,true);
 
-        aLink.download = fileName;
-        aLink.href = URL.createObjectURL(blob);
-        aLink.dispatchEvent(evt);
+            aLink.download = fileName;
+            aLink.href = URL.createObjectURL(blob);
+            aLink.dispatchEvent(evt);
+        }
+
     }
 </script>
 
