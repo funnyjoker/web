@@ -3,15 +3,15 @@
 <head>
     <meta charset="utf-8">
     <title>下载测试</title>
-    <!--<script src="js/Base64.js" type="text/javascript"></script>-->
+    <script src="Base64.js" type="text/javascript"></script>
     <!--<script src="js/jquery-1.11.0.min.js"></script>-->
 </head>
 <body>
     <a href="http://pinganpub.u.qiniudn.com/Hm_admin_1398323658415_47164" id="picture" onclick="savepic();return false;">下载图片</a> <br/>
-    <!--<button id="test" onclick="test();">测试Base64</button>  <br/>-->
+    <button id="test" onclick="test();">测试Base64字符串</button>  <br/>
     <!--测试输入：<input type="text"><br/>-->
     <!--输入电话： <input type="tel"/>-->
-    <a href="#" id="newlink" >下载图片2</a>
+    <!--<a href="#" id="newlink" >下载图片2</a>-->
     <p id="tips"></p>
 <script>
 
@@ -25,13 +25,24 @@
         // 使用完了，关闭窗口
         win.close();
     }*/
-    /*function test(){
+    function test(){
         var base64=new Base64(),
-            str="中国人往往ww65#$qw";
+            str="中国人往往ww65#$qwwdwdwdwdwd撒谎嗲杀死";
         console.log(str);
         var encodeStr=base64.encode(str);
         console.log(encodeStr);
-    }*/
+        var bytes=window.atob(encodeStr); //去掉url的头，并转换为byte
+
+        //处理异常,将ascii码小于0的转换为大于0
+        //var ia = new ArrayBuffer(bytes.length);
+        var ia = new Uint8Array(bytes.length);
+        for (var i = 0; i < bytes.length; i++) {
+            ia[i] = bytes.charCodeAt(i);
+        }
+
+        var blob= new Blob([ia] , {type : 'application/vnd.ms-excel'});
+        downloadFile("newfile",blob);
+    }
 
     var tip=document.getElementById('tips');
     function savepic(){
